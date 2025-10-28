@@ -16,6 +16,7 @@ export function setLanguage(lang: LangKey) {
 
 export function t(path: string): string {
   const keys = path.split(".")
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let result: any = languages[currentLang]
   for (const key of keys) {
     result = result?.[key]

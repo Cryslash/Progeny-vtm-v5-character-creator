@@ -1,6 +1,6 @@
 import { Aside, Center, ScrollArea, Stepper } from "@mantine/core"
 import { Character, containsBloodSorcery } from "../data/Character"
-import { isDefault, upcase } from "../generator/utils"
+import { isDefault } from "../generator/utils"
 import { globals } from "../globals"
 import { t } from "../i18n"
 
