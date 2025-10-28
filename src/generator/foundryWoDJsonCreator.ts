@@ -401,40 +401,60 @@ export const createWoD5EVttJson = (character: Character): { json: WoD5EVttJson; 
         })
     }
 
-    // Merit items
-    const allMerits = [
-        ...(character.merits || []),
-        ...(character.predatorType?.pickedMeritsAndFlaws?.filter((m) => m.type === "merit") || []),
-    ]
-    for (const merit of allMerits) {
-        items.push({
-            name: merit.name,
-            type: "feature",
-            system: {
-                description: merit.summary || "",
-                featuretype: "merit",
-                points: merit.level,
-                bonuses: [],
-                uses: { max: 0, current: 0, enabled: false },
-            },
-        })
-    }
+// --- Merits & Flaws Export (Foundry) ---
+// Combina todas as fontes, assim como o método do PDF
 
-    // Flaw items
-    const allFlaws = [...(character.flaws || []), ...(character.predatorType?.pickedMeritsAndFlaws?.filter((m) => m.type === "flaw") || [])]
-    for (const flaw of allFlaws) {
-        items.push({
-            name: flaw.name,
-            type: "feature",
-            system: {
-                description: flaw.summary || "",
-                featuretype: "flaw",
-                points: flaw.level,
-                bonuses: [],
-                uses: { max: 0, current: 0, enabled: false },
-            },
-        })
-    }
+// Méritos e falhas criados diretamente no personagem
+const characterMeritsFlaws = [...(character.merits || []), ...(character.flaws || [])]
+
+// Méritos e falhas fixos do tipo de predador (definidos no schema)
+const predatorTypeData = PredatorTypes[character.predatorType.name]
+const predatorTypeMeritsFlaws = predatorTypeData?.meritsAndFlaws?.filter(
+    (m) => !characterMeritsFlaws.some((cm) => cm.name === m.name)
+) || []
+
+// Méritos e falhas escolhidos dinamicamente (possuem o campo “type”)
+const pickedPredatorTypeMeritsFlaws = character.predatorType?.pickedMeritsAndFlaws || []
+
+// Junta tudo em uma única lista
+const allMeritsAndFlaws = [
+    ...predatorTypeMeritsFlaws,
+    ...pickedPredatorTypeMeritsFlaws,
+    ...characterMeritsFlaws,
+]
+
+// Divide entre méritos e falhas (baseado em “type”, quando existir)
+const allMerits = allMeritsAndFlaws.filter((m) => m.type === "merit" || !m.type && !/flaw/i.test(m.name))
+const allFlaws = allMeritsAndFlaws.filter((m) => m.type === "flaw" || /flaw/i.test(m.name))
+
+// Exporta como items no Foundry
+for (const merit of allMerits) {
+    items.push({
+        name: merit.name,
+        type: "feature",
+        system: {
+            description: merit.summary || "",
+            featuretype: "merit",
+            points: merit.level,
+            bonuses: [],
+            uses: { max: 0, current: 0, enabled: false },
+        },
+    })
+}
+
+for (const flaw of allFlaws) {
+    items.push({
+        name: flaw.name,
+        type: "feature",
+        system: {
+            description: flaw.summary || "",
+            featuretype: "flaw",
+            points: flaw.level,
+            bonuses: [],
+            uses: { max: 0, current: 0, enabled: false },
+        },
+    })
+}
 
     // Ritual items
     for (const ritual of character.rituals || []) {
@@ -477,8 +497,12 @@ export const createWoD5EVttJson = (character: Character): { json: WoD5EVttJson; 
                 concept: character.description ?? "",
                 chronicle: "",
                 ambition: character.ambition ?? "",
-                desire: character.desire ?? "",
-                touchstones: character.touchstones.map((t) => t.name).join(", "),
+                desire: character.desire ?? "",                
+                touchstones: character.touchstones.map((t) => { const name = t.name?.trim() || "";
+                const conviction = t.conviction?.trim() ? ` >> ${t.conviction.trim()}` : "";
+                const description = t.description?.trim() ? ` (${t.description.trim()})` : "";
+                return `${name}${conviction}${description}`;
+                }).filter((s) => s.length > 0).join(", "),
                 tenets: "",
                 sire: character.sire ?? "",
                 generation: String(character.generation ?? ""),
