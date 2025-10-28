@@ -6,6 +6,8 @@ import { AttributesKey, attributeDescriptions, attributesKeySchema } from "../..
 import { Character } from "../../data/Character"
 import { globals } from "../../globals"
 import { upcase } from "../utils"
+import { t } from "../../i18n"
+
 
 type AttributePickerProps = {
     character: Character
@@ -108,7 +110,9 @@ const AttributePicker = ({ character, setCharacter, nextStep }: AttributePickerP
                             onClick()
                         }}
                     >
-                        <Text fz={phoneScreen ? 12 : "inherit"}>{upcase(attribute)}</Text>
+                        <Text fz={phoneScreen ? 12 : "inherit"}>
+                          {t(`attributes.${attribute}`)}
+                        </Text>
                     </Button>
                 </Tooltip>
 
@@ -129,22 +133,35 @@ const AttributePicker = ({ character, setCharacter, nextStep }: AttributePickerP
 
     return (
         <div>
-            <Text style={strongestStyle} ta={"center"}>
-                {toPick === "strongest" ? ">" : ""} Pick your <b>strongest</b> attribute! (lvl 4)
+            <Text style={strongestStyle} ta="center">
+                {toPick === "strongest" ? ">" : ""}{" "}
+                <span dangerouslySetInnerHTML={{ __html: t("ui.attributesSelection.strongest") }} />
             </Text>
-            <Text style={weakestStyle} ta={"center"}>
-                {toPick === "weakest" ? ">" : ""} Pick your <b> weakest</b> attribute! (lvl 1)
+
+            <Text style={weakestStyle} ta="center">
+                {toPick === "weakest" ? ">" : ""}{" "}
+                <span dangerouslySetInnerHTML={{ __html: t("ui.attributesSelection.weakest") }} />
             </Text>
-            <Text style={mediumStyle} ta={"center"}>
-                {toPick === "medium" ? ">" : ""} Pick <b>{3 - pickedAttributes.medium.length} medium</b> attribute
-                {pickedAttributes.medium.length < 2 ? "s" : ""}! (lvl 3)
+
+            <Text style={mediumStyle} ta="center">
+                {toPick === "medium" ? ">" : ""}{" "}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t(
+                      pickedAttributes.medium.length < 2
+                        ? "ui.attributesSelection.medium_plural"
+                        : "ui.attributesSelection.medium_singular"
+                    ).replace("{{count}}", `${3 - pickedAttributes.medium.length}`),
+                  }}
+                />
             </Text>
-            <Text style={{ fontSize: "14px", color: "grey" }} ta={"center"}>
-                Remaining attributes will be lvl 2
+            
+            <Text style={{ fontSize: "14px", color: "grey" }} ta="center">
+                {t("ui.attributesSelection.remaining")}
             </Text>
 
             <Text mt={"xl"} ta="center" fz="xl" fw={700} c="red">
-                Attributes
+                {t("ui.attributesSelection.title")}
             </Text>
 
             <hr color="#e03131" />
@@ -153,17 +170,17 @@ const AttributePicker = ({ character, setCharacter, nextStep }: AttributePickerP
                 <Grid grow>
                     <Grid.Col span={4}>
                         <Text fs="italic" fw={700} ta="center">
-                            Physical
+                            {t("attributes.physical")}
                         </Text>
                     </Grid.Col>
                     <Grid.Col span={4}>
                         <Text fs="italic" fw={700} ta="center">
-                            Social
+                            {t("attributes.social")}
                         </Text>
                     </Grid.Col>
                     <Grid.Col span={4}>
                         <Text fs="italic" fw={700} ta="center">
-                            Mental
+                            {t("attributes.mental")}
                         </Text>
                     </Grid.Col>
                     {["strength", "charisma", "intelligence", "dexterity", "manipulation", "wits", "stamina", "composure", "resolve"]

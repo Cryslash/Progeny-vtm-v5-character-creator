@@ -7,6 +7,7 @@ import { Discipline, Power, disciplines } from "../../data/Disciplines"
 import { globals } from "../../globals"
 import { intersection, upcase } from "../utils"
 import { DisciplineName } from "~/data/NameSchemas"
+import { t } from "../../i18n"
 
 type DisciplinesPickerProps = {
     character: Character
@@ -19,7 +20,6 @@ const getAvailableDisciplines = (character: Character): Record<DisciplineName, D
     for (const n of character.availableDisciplineNames) {
         availableDisciplines[n] = disciplines[n]
     }
-
     return availableDisciplines
 }
 
@@ -38,55 +38,47 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
     const disciplinesForClan = getAvailableDisciplines(character)
     const predatorTypeDiscipline = disciplines[character.predatorType.pickedDiscipline]
 
-    const isPicked = (power: Power) => {
-        return allPickedPowers.map((power) => power.name).includes(power.name)
-    }
+    const isPicked = (power: Power) => allPickedPowers.map((p) => p.name).includes(power.name)
     const missingAmalgamPrereq = (power: Power) => {
         for (const { discipline, level } of power.amalgamPrerequisites) {
-            const pickedDisciplineLevel = allPickedPowers
-                .map((power) => power.discipline)
-                .filter((powerDisc) => powerDisc === discipline).length
-
-            if (pickedDisciplineLevel < level) return true
+            const pickedLevel = allPickedPowers.filter((p) => p.discipline === discipline).length
+            if (pickedLevel < level) return true
         }
         return false
     }
+
     const missingPrerequisites = (power: Power) => {
         const powersOfDiscipline = disciplines[power.discipline].powers
-
-        // lvl n powers require picking n-1 powers to access
         if (intersection(powersOfDiscipline, allPickedPowers).length < power.level - 1) return true
-
         if (missingAmalgamPrereq(power)) return true
-
         return false
     }
+
     const alreadyPickedTwoPowers = (power: Power) => {
         const powersOfDiscipline = disciplines[power.discipline].powers
-
         return intersection(powersOfDiscipline, pickedPowers).length === 2
     }
-    const alreadyPickedTwoDisciplines = (power: Power) => {
-        const pickedDisciplines = pickedPowers.map((power) => power.discipline)
-        const uniquePickedDisciplines = [...new Set(pickedDisciplines)]
 
+    const alreadyPickedTwoDisciplines = (power: Power) => {
+        const pickedDisciplines = pickedPowers.map((p) => p.discipline)
+        const uniquePickedDisciplines = [...new Set(pickedDisciplines)]
         return uniquePickedDisciplines.length >= 2 && !uniquePickedDisciplines.includes(power.discipline)
     }
+
     const allPowersPicked = () => pickedPowers.length >= 3
 
     const undoPick = () => {
         setPickedPowers(pickedPowers.slice(0, -1))
-        // Prepare allPickedPowers to check if pickedPredatorTypePower still meets prerequisites
         allPickedPowers = pickedPowers.slice(0, -1)
         if (pickedPredatorTypePower && missingPrerequisites(pickedPredatorTypePower)) {
             setPickedPredatorTypePower(undefined)
         }
     }
+
     const undoPredatorTypePick = () => {
-        // Prepare allPickedPowers to check if pickedPowers still meet prerequisites
         allPickedPowers = allPickedPowers
             .filter((p) => p.name !== pickedPredatorTypePower?.name)
-            .filter((p) => !(p.discipline === pickedPredatorTypePower?.discipline && p.level > (pickedPredatorTypePower?.level ?? 0))) // remove powers of same discipline with higher level
+            .filter((p) => !(p.discipline === pickedPredatorTypePower?.discipline && p.level > (pickedPredatorTypePower?.level ?? 0)))
         setPickedPredatorTypePower(undefined)
         setPickedPowers(pickedPowers.filter((p) => !missingPrerequisites(p)))
     }
@@ -106,12 +98,14 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
                     label: power.name,
                 })
             }
+
             const onClick = () => (isForPredatorType ? setPickedPredatorTypePower(power) : setPickedPowers([...pickedPowers, power]))
 
             const amalgamHeight = 25
             let cardHeight = phoneScreen ? 180 : 215
             if (power.amalgamPrerequisites.length > 0) cardHeight += amalgamHeight
             if (power.name.length > 15) cardHeight += 25
+
             return (
                 <Card key={power.name} mb={20} h={cardHeight} style={{ backgroundColor: "rgba(26, 27, 30, 0.90)" }}>
                     <Group position="apart" mt="0" mb="xs">
@@ -119,7 +113,7 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
                             {power.name}
                         </Text>
                         <Badge pos={"absolute"} top={0} right={0} radius={"xs"} color="pink" variant="light">
-                            lv {power.level}
+                            {t("ui.disciplinesPicker.level")} {power.level}
                         </Badge>
                     </Group>
 
@@ -129,22 +123,20 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
                     {power.amalgamPrerequisites.length > 0 ? (
                         <div style={{ height: amalgamHeight }}>
                             <Text size="sm" color="red">
-                                Requires:
+                                {t("ui.disciplinesPicker.requires")}
                             </Text>
                             <List size="xs">
-                                {power.amalgamPrerequisites.map((prereq) => {
-                                    return (
-                                        <List.Item key={power.name + prereq.discipline}>
-                                            {upcase(prereq.discipline)}: Lv {prereq.level}
-                                        </List.Item>
-                                    )
-                                })}
+                                {power.amalgamPrerequisites.map((prereq) => (
+                                    <List.Item key={power.name + prereq.discipline}>                                        
+                                        {t("disciplineName."+prereq.discipline)}: {t("ui.disciplinesPicker.levelShort")} {prereq.level}
+                                    </List.Item>
+                                ))}
                             </List>
-                            {missingAmalgamPrereq(power) ? null : (
+                            {!missingAmalgamPrereq(power) ? (
                                 <Text size="xs" color="green">
-                                    (requirements met)
+                                    ({t("ui.disciplinesPicker.requirementsMet")})
                                 </Text>
-                            )}
+                            ) : null}
                         </div>
                     ) : null}
 
@@ -160,15 +152,14 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
                             fullWidth
                             radius="md"
                         >
-                            <Text truncate>Take {power.name}</Text>
+                            <Text truncate>{t("ui.disciplinesPicker.take")} {power.name}</Text>
                         </Button>
                     </div>
                 </Card>
             )
         })
     }
-
-    const getDisciplineAccordionItem = (disciplineName: string, discipline: Discipline, isPredatorType = false) => {
+        const getDisciplineAccordionItem = (disciplineName: string, discipline: Discipline, isPredatorType = false) => {
         const clanHasPrereqDisciplines = (power: Power) => {
             const prereqDisciplines = power.amalgamPrerequisites.map((prereq) => prereq.discipline)
             for (const disc of prereqDisciplines) {
@@ -179,7 +170,6 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
 
         const clanHasDiscipline = (disciplineName: DisciplineName) => disciplinesForClan[disciplineName] !== undefined
 
-        // Only show Amalgams that the clan can theoretically pick; using predator-type to get amalgams is intentionally impossible
         const eligiblePowers = discipline.powers.filter(clanHasPrereqDisciplines)
 
         const lvl1Powers = eligiblePowers.filter((power) => power.level === 1)
@@ -192,7 +182,9 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
         const colSpan = smallScreen ? 12 : canReachLvl3 ? 4 : 6
         return (
             <Accordion.Item key={disciplineName + isPredatorType} value={disciplineName + isPredatorType}>
-                <Accordion.Control icon={<Image src={discipline.logo} />}>{upcase(disciplineName)}</Accordion.Control>
+                <Accordion.Control icon={<Image src={discipline.logo} />}>
+                  {t(`disciplineName.${disciplineName.toLowerCase()}`)}
+                </Accordion.Control>
                 <Accordion.Panel>
                     <Stack>
                         <Grid>
@@ -217,9 +209,9 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
                                 return (
                                     <div key={power.name}>
                                         <Text weight={700} size={"xl"}>
-                                            {upcase(power.discipline)}
+                                           {t(`disciplineName.${power.discipline.toLowerCase()}`)}
                                         </Text>
-                                        <Text> {power.name}</Text>
+                                        <Text>{power.name}</Text>
                                     </div>
                                 )
                             }
@@ -227,22 +219,21 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
                         })}
                         {pickedPowers.length > 0 ? (
                             <Button variant="light" color="red" onClick={undoPick}>
-                                Undo last pick
+                                {t("ui.disciplinesPicker.undoLastPick")}
                             </Button>
                         ) : null}
 
-                        {/* Predator Type Discipline pick */}
                         {pickedPredatorTypePower ? (
                             <div>
                                 {powersSortedByDiscipline.length > 0 ? <hr style={{ width: "100%" }} color="#e03131" /> : null}
 
-                                <Text weight={700} size={"xl"}>
-                                    {upcase(pickedPredatorTypePower.discipline)}
+                                <Text weight={700} size={"xl"}>                                    
+                                    {t(`disciplineName.${pickedPredatorTypePower.discipline}`)}
                                 </Text>
-                                <Text> {pickedPredatorTypePower.name}</Text>
+                                <Text>{pickedPredatorTypePower.name}</Text>
 
                                 <Button variant="light" color="red" onClick={undoPredatorTypePick}>
-                                    Undo pred pick
+                                    {t("ui.disciplinesPicker.undoPredPick")}
                                 </Button>
                             </div>
                         ) : null}
@@ -261,8 +252,8 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
         return (
             <div style={{ width: smallScreen ? "393px" : "810px", marginTop: globals.isPhoneScreen ? "60px" : "80px" }}>
                 <Text fw={500} fz={smallScreen ? "14px" : "28px"} ta="center">
-                    <b>Thin-bloods</b> do not pick disciplines
-                    <br /> you gain them from blood resonance
+                    <b>{t("ui.disciplinesPicker.thinBloods")}</b> {t("ui.disciplinesPicker.doNotPickDisciplines")}
+                    <br /> {t("ui.disciplinesPicker.gainFromResonance")}
                 </Text>
 
                 <Center mt={"lg"}>
@@ -277,33 +268,33 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
                             nextStep()
                         }}
                     >
-                        Continue
+                        {t("ui.common.continue")}
                     </Button>
                 </Center>
             </div>
         )
     }
+    const predatorTypeKey = character?.predatorType?.pickedDiscipline?.toLowerCase() ?? "";
+    const predatorTypeName = upcase(t(`disciplineName.${predatorTypeKey}`) || predatorTypeKey);
 
     return (
         <div style={{ width: smallScreen ? "393px" : "810px", marginTop: globals.isPhoneScreen ? "60px" : "80px" }}>
             <Text fw={700} fz={smallScreen ? "14px" : "28px"} ta="center">
-                Pick 2 powers in one discipline,
-                <br /> 1 power in another,
-                <br /> And 1 power in {upcase(character.predatorType.pickedDiscipline)} from your Predator Type
+              {t("ui.disciplinesPicker.pickInstructions.line1")}<br />
+              {t("ui.disciplinesPicker.pickInstructions.line2")}<br />
+              {t("ui.disciplinesPicker.pickInstructions.line3")
+               .replace(/\{\{\s*predatorType\s*\}\}/g, predatorTypeName)}
             </Text>
 
             <Text mt={"xl"} ta="center" fz="xl" fw={700} c="red">
-                Disciplines
+                {t("ui.disciplinesPicker.title")}
             </Text>
             <hr color="#e03131" />
             <Space h={"sm"} />
 
             <Stack align="center" spacing="xl" w={"100%"}>
                 <Grid w={"100%"}>
-                    {/* Picked Powers */}
                     {smallScreen ? null : getPickedPowersSection()}
-
-                    {/* Discipline-List */}
 
                     <Grid.Col span={smallScreen ? 12 : 9} offset={smallScreen ? 0 : 1}>
                         <ScrollArea h={smallScreen ? height - 320 : height - 400} pb={20} w={"105%"}>
@@ -314,14 +305,13 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
                                     )}
 
                                     <Text fw={700} mt={"lg"} c={"red"} ta={"center"}>
-                                        Predator Type Discipline
+                                        {t("ui.disciplinesPicker.predatorTypeDiscipline")}
                                     </Text>
                                     <hr color="#e03131" />
                                     {getDisciplineAccordionItem(character.predatorType.pickedDiscipline, predatorTypeDiscipline, true)}
                                 </Accordion>
                             </Center>
 
-                            {/* Picked Powers */}
                             {smallScreen ? getPickedPowersSection() : null}
                         </ScrollArea>
                     </Grid.Col>
@@ -339,7 +329,7 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
                         nextStep()
                     }}
                 >
-                    Confirm
+                    {t("ui.common.confirm")}
                 </Button>
             </Stack>
         </div>
@@ -347,3 +337,4 @@ const DisciplinesPicker = ({ character, setCharacter, nextStep }: DisciplinesPic
 }
 
 export default DisciplinesPicker
+

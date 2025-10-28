@@ -13,6 +13,7 @@ import { createWoD5EVttJson } from "../foundryWoDJsonCreator"
 import { useEffect, useState } from "react"
 import ReactGA from "react-ga4"
 import { trackEvent } from "../../utils/analytics"
+import { t } from "../../i18n"
 
 type FinalProps = {
     character: Character
@@ -31,26 +32,26 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
 
     return (
         <div style={{ maxWidth: "440px" }}>
-            <Text ta={"center"} fz={"50px"}>
+            <Text ta="center" fz="50px">
                 <FontAwesomeIcon icon={faCheckSquare} color="green" />
             </Text>
-            <Text fz={"32px"} ta={"center"} fw={700} mb={20}>
-                Character Creation Complete
+            <Text fz="32px" ta="center" fw={700} mb={20}>
+                {t("ui.final.creationComplete")}
             </Text>
 
             <div style={{ background: "rgba(0, 0, 0, 0.6)", padding: "10px", borderRadius: "8px", marginBottom: "20px" }}>
-                <Text fz={"xl"} mb={"xl"}>
-                    You can now export to a printable PDF or download your character as JSON file, which you can later load again to
-                    continue editing
+                <Text fz="xl" mb="xl">
+                    {t("ui.final.exportInstructions")}
                 </Text>
-                <Text fz={"xl"}>
-                    For feature requests, bug reports and general feedback, message me on:&nbsp;
+                {/* <Text fz="xl">
+                    {t("ui.final.feedbackMessage")}
+                    &nbsp;
                     <ActionIcon
-                        display={"inline"}
+                        display="inline"
                         component="a"
                         href="https://www.reddit.com/user/ProgenyDev/"
                         variant="default"
-                        c={"#ff6314"}
+                        c="#ff6314"
                         target="_blank"
                         rel="noreferrer"
                     >
@@ -58,11 +59,11 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                     </ActionIcon>
                     &nbsp;
                     <ActionIcon
-                        display={"inline"}
+                        display="inline"
                         component="a"
                         href="https://twitter.com/Odin68092534"
                         variant="default"
-                        c={"#1DA1F2"}
+                        c="#1DA1F2"
                         target="_blank"
                         rel="noreferrer"
                     >
@@ -70,18 +71,19 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                     </ActionIcon>
                     &nbsp;
                     <ActionIcon
-                        display={"inline"}
+                        display="inline"
                         component="a"
                         href="https://bsky.app/profile/odinmatthias.bsky.social"
                         variant="default"
-                        c={"#208BFE"}
+                        c="#208BFE"
                         target="_blank"
                         rel="noreferrer"
                     >
                         <IconButterfly />
                     </ActionIcon>
-                </Text>
+                </Text> */}
             </div>
+
             <Stack align="center" spacing="xl">
                 <Button
                     leftIcon={<FontAwesomeIcon icon={faFilePdf} />}
@@ -100,7 +102,7 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                         })
                     }}
                 >
-                    Download PDF
+                    {t("ui.final.downloadPdf")}
                 </Button>
 
                 <Button
@@ -121,7 +123,7 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                         })
                     }}
                 >
-                    Download JSON
+                    {t("ui.final.downloadJson")}
                 </Button>
 
                 <Button
@@ -129,11 +131,9 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                     size="lg"
                     color="blue"
                     variant="light"
-                    onClick={() => {
-                        openExportModal()
-                    }}
+                    onClick={openExportModal}
                 >
-                    Export to ...
+                    {t("ui.final.exportTo")}
                 </Button>
 
                 <Button
@@ -146,7 +146,7 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                     color="gray"
                     variant="light"
                 >
-                    Support me on Ko-Fi
+                    {t("ui.final.support")}
                 </Button>
 
                 <Button
@@ -154,35 +154,32 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                     size="md"
                     color="red"
                     variant="subtle"
-                    onClick={() => {
-                        openResetModal()
-                    }}
+                    onClick={openResetModal}
                 >
-                    Reset
+                    {t("ui.final.reset")}
                 </Button>
             </Stack>
 
             {downloadError ? (
-                <Alert mt={"50px"} icon={<IconAlertCircle size="1rem" />} color="red" variant="outline" bg={"rgba(0, 0, 0, 0.6)"}>
-                    <Text fz={"xl"} ta={"center"}>
-                        There was a download-error: {downloadError.message}
+                <Alert mt="50px" icon={<IconAlertCircle size="1rem" />} color="red" variant="outline" bg="rgba(0, 0, 0, 0.6)">
+                    <Text fz="xl" ta="center">
+                        {t("ui.final.downloadError")}: {downloadError.message}
                     </Text>
-                    <Text fz={"lg"} ta={"center"} mb={"xl"}>
-                        Send a screenshot of this to me on{" "}
+                    <Text fz="lg" ta="center" mb="xl">
+                        {t("ui.final.sendScreenshot")}{" "}
                         <a target="_blank" rel="noreferrer" href="https://twitter.com/Odin68092534">
                             Twitter
-                        </a>{" "}
-                        to help me fix it
+                        </a>
                     </Text>
-                    <Text fz={"xs"} ta={"center"}>
+                    <Text fz="xs" ta="center">
                         {downloadError.stack}
                     </Text>
                 </Alert>
             ) : null}
 
-            <Alert mt={"50px"} icon={<IconAlertCircle size="1rem" />} color="violet" variant="outline" bg={"rgba(0, 0, 0, 0.6)"}>
-                <Text fz={"lg"} ta={"center"}>
-                    You may need to refresh your browser to trigger multiple downloads!
+            <Alert mt="50px" icon={<IconAlertCircle size="1rem" />} color="violet" variant="outline" bg="rgba(0, 0, 0, 0.6)">
+                <Text fz="lg" ta="center">
+                    {t("ui.final.refreshWarning")}
                 </Text>
             </Alert>
 
@@ -193,10 +190,10 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                 closeResetModal={closeResetModal}
             />
 
-            <Modal opened={exportModalOpened} onClose={closeExportModal} title="Export to other platforms" centered withCloseButton={true}>
+            <Modal opened={exportModalOpened} onClose={closeExportModal} title={t("ui.final.exportModalTitle")} centered withCloseButton>
                 <Stack>
-                    <Text fz={"lg"} mb="md">
-                        Progeny can export file formats compatible with the following platforms:
+                    <Text fz="lg" mb="md">
+                        {t("ui.final.exportModalDescription")}
                     </Text>
 
                     <div
@@ -220,8 +217,8 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                                     Foundry WoD5E VTT
                                 </a>
                             </Text>
-                            <Text fz={"sm"} c="dimmed">
-                                Use your character in the foundry virtual tabletop
+                            <Text fz="sm" c="dimmed">
+                                {t("ui.final.foundryDescription")}
                             </Text>
                         </div>
                         <Button
@@ -236,24 +233,19 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                                     link.href = window.URL.createObjectURL(blob)
                                     link.download = `foundry_wod5e_${character.name}.json`
                                     link.click()
+                                    setTimeout(() => window.URL.revokeObjectURL(link.href), 100)
 
-                                    // Clean up the object URL to prevent memory leaks
-                                    setTimeout(() => {
-                                        window.URL.revokeObjectURL(link.href)
-                                    }, 100)
-
-                                    // Show warning toast if validation failed
                                     if (validationErrors.length > 0) {
                                         const errorCount = validationErrors.length
                                         const firstError = validationErrors[0]
                                         const message =
                                             errorCount === 1
-                                                ? `Validation error: ${firstError}`
-                                                : `${errorCount} validation errors found. First error: ${firstError}`
+                                                ? `Erro de validação: ${firstError}`
+                                                : `${errorCount} erros de validação encontrados. Primeiro erro: ${firstError}`
 
                                         notifications.show({
-                                            title: "Validation Warning",
-                                            message: `The exported JSON may not be fully compatible with Foundry VTT. ${message}`,
+                                            title: t("ui.final.validationWarningTitle"),
+                                            message: t("ui.final.validationWarningMessage", { message }),
                                             color: "orange",
                                             autoClose: 10000,
                                         })
@@ -271,7 +263,7 @@ const Final = ({ character, setCharacter, setSelectedStep }: FinalProps) => {
                                 }
                             }}
                         >
-                            Export JSON
+                            {t("ui.final.exportJson")}
                         </Button>
                     </div>
                 </Stack>

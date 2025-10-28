@@ -1,5 +1,6 @@
 import { Character } from "./Character"
 import { ClanName } from "./NameSchemas"
+import { t } from "../i18n"
 
 export type MeritOrFlaw = { name: string; cost: number[]; summary: string }
 
@@ -10,205 +11,167 @@ export type MeritsAndFlaws = {
 }
 
 export const thinbloodMeritsAndFlaws: MeritsAndFlaws = {
-    title: "◐ Thin-blood specific",
+    title: t("meritsAndFlaws.thinblood.title"),
     merits: [
-        { name: "Anarch Comrades", cost: [1], summary: "A coterie of Anarchs considers you their pet" },
-        {
-            name: "Camarilla Contact",
-            cost: [1],
-            summary: "A Camarilla recruiter promises you admittance, but treats you badly and asks you to do tasks",
-        },
-        { name: "Catenating Blood", cost: [1], summary: "You can create blood bonds and embrace new Vampires" },
-        {
-            name: "Day Drinker",
-            cost: [1],
-            summary: "Walking in the sun doesn't damage you, but removes all your Vampiric abilities and halves your health",
-        },
-        { name: "Discipline Affinity", cost: [1], summary: "Pick a Discipline (lv1) that you can increase like a normal Vampire" },
-        { name: "Lifelike", cost: [1], summary: "Your body appears fully human, with a beating heart and a working stomach" },
-        { name: "Thin-blood Alchemist", cost: [1], summary: "Gain one dot and one formula in Thin-blood Alchemy" },
-        { name: "Vampiric Resilience", cost: [1], summary: "Suffer only superficial damage from most sources, like a normal Vampire" },
+        { name: t("meritsAndFlaws.thinblood.merits.anarchComrades.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.merits.anarchComrades.summary") },
+        { name: t("meritsAndFlaws.thinblood.merits.camarillaContact.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.merits.camarillaContact.summary") },
+        { name: t("meritsAndFlaws.thinblood.merits.catenatingBlood.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.merits.catenatingBlood.summary") },
+        { name: t("meritsAndFlaws.thinblood.merits.dayDrinker.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.merits.dayDrinker.summary") },
+        { name: t("meritsAndFlaws.thinblood.merits.disciplineAffinity.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.merits.disciplineAffinity.summary") },
+        { name: t("meritsAndFlaws.thinblood.merits.lifelike.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.merits.lifelike.summary") },
+        { name: t("meritsAndFlaws.thinblood.merits.alchemist.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.merits.alchemist.summary") },
+        { name: t("meritsAndFlaws.thinblood.merits.resilience.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.merits.resilience.summary") },
     ],
     flaws: [
-        { name: "Baby Teeth", cost: [1], summary: "Your teeth are useless for feeding, you need to cut your victims" },
-        { name: "Bestial Temper", cost: [1], summary: "Be weak to frenzy like a normal vampire" },
-        { name: "Branded by the Camarilla", cost: [1], summary: "The Camarilla have their eyes peeled on you" },
-        { name: "Shunned by the Anarchs", cost: [1], summary: "Anarchs shun you" },
-        { name: "Clan Curse", cost: [1], summary: "Pick a Clan Curse (severity 1)" },
-        { name: "Dead Flesh", cost: [1], summary: "Your flesh slowly rots, -1 to social tests with Mortals" },
-        { name: "Mortal Frailty", cost: [1], summary: "Cannot rouse your blood to heal yourself" },
-        { name: "Vitae Dependency", cost: [1], summary: "Need to drink Vampire vitae once a week to use Disciplines" },
+        { name: t("meritsAndFlaws.thinblood.flaws.babyTeeth.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.flaws.babyTeeth.summary") },
+        { name: t("meritsAndFlaws.thinblood.flaws.bestialTemper.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.flaws.bestialTemper.summary") },
+        { name: t("meritsAndFlaws.thinblood.flaws.branded.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.flaws.branded.summary") },
+        { name: t("meritsAndFlaws.thinblood.flaws.shunned.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.flaws.shunned.summary") },
+        { name: t("meritsAndFlaws.thinblood.flaws.clanCurse.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.flaws.clanCurse.summary") },
+        { name: t("meritsAndFlaws.thinblood.flaws.deadFlesh.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.flaws.deadFlesh.summary") },
+        { name: t("meritsAndFlaws.thinblood.flaws.mortalFrailty.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.flaws.mortalFrailty.summary") },
+        { name: t("meritsAndFlaws.thinblood.flaws.vitaeDependency.name"), cost: [1], summary: t("meritsAndFlaws.thinblood.flaws.vitaeDependency.summary") },
     ],
 }
+
 export const isThinbloodMerit = (m: string) => !!thinbloodMeritsAndFlaws.merits.find((tbm) => tbm.name === m)
 export const isThinbloodFlaw = (f: string) => !!thinbloodMeritsAndFlaws.flaws.find((tbf) => tbf.name === f)
 export const isThinbloodMeritOrFlaw = (mf: string) => isThinbloodMerit(mf) || isThinbloodFlaw(mf)
 
 export const meritsAndFlaws: MeritsAndFlaws[] = [
     {
-        title: "💄 Looks",
+        title: t("meritsAndFlaws.looks.title"),
         merits: [
-            { name: "Beautiful", cost: [2], summary: "+1 die in Social rolls" },
-            { name: "Stunning", cost: [4], summary: "+2 dice in Social rolls" },
+            { name: t("meritsAndFlaws.looks.merits.beautiful.name"), cost: [2], summary: t("meritsAndFlaws.looks.merits.beautiful.summary") },
+            { name: t("meritsAndFlaws.looks.merits.stunning.name"), cost: [4], summary: t("meritsAndFlaws.looks.merits.stunning.summary") },
         ],
         flaws: [
-            { name: "Ugly", cost: [1], summary: "-1 die in Social rolls" },
-            { name: "Repulsive", cost: [2], summary: "-2 dice in Social rolls" },
+            { name: t("meritsAndFlaws.looks.flaws.ugly.name"), cost: [1], summary: t("meritsAndFlaws.looks.flaws.ugly.summary") },
+            { name: t("meritsAndFlaws.looks.flaws.repulsive.name"), cost: [2], summary: t("meritsAndFlaws.looks.flaws.repulsive.summary") },
         ],
     },
     {
-        title: "🏠 Haven",
-        merits: [
-            { name: "Haven", cost: [1, 2, 3], summary: "secure homebase, 1 - apartment, 3 - big building" },
-            { name: "Hidden Armory", cost: [1], summary: "weapons and armor in your haven" },
-            { name: "Cell", cost: [1], summary: "you can imprison people in your haven" },
-            { name: "Watchmen", cost: [1], summary: "mortal security guards" },
-            { name: "Luxury", cost: [1], summary: "+2 Dice on Social rolls in your haven" },
-        ],
-        flaws: [
-            { name: "No Haven", cost: [1], summary: "you don't have a home" },
-            { name: "Haunted", cost: [1], summary: "ghostly presence in your haven" },
-            {
-                name: "Creepy",
-                cost: [1],
-                summary: "your haven looks like the den of a serial killer, neighbors might phone in a tip to the police",
-            },
-            { name: "Compromised", cost: [2], summary: "your haven is on a watchlist" },
-        ],
-    },
-    {
-        title: "💰 Resources",
-        merits: [
-            {
-                name: "Resources",
-                cost: [1, 2, 3, 4, 5],
-                summary: "wealth & income, 1 - you can afford basics, 5 - you can afford anything money can buy",
-            },
-            {
-                name: "Check the Trunk",
-                cost: [1],
-                summary: "Get easy access to an armory or tools; none of the items can be more valuable than Resources 2",
-            },
-        ],
-        flaws: [{ name: "Destitute", cost: [1], summary: "poor & no income" }],
-    },
-    {
-        title: "🩸 Feeding",
-        merits: [
-            { name: "Bloodhound", cost: [1], summary: "smell resonance in mortal blood" },
-            {
-                name: "High-functioning addict",
-                cost: [1],
-                summary: "add a die to one category of pool (choose once) when the last person you fed from was on your drug",
-            },
-            { name: "Iron Gullet", cost: [3], summary: "able to feed on rancid blood" },
-        ],
-        flaws: [
-            { name: "Prey Exclusion", cost: [1], summary: "can't feed on certain types of people" },
-            { name: "Methusela's Thirst", cost: [1], summary: "can't fully satiate on mortal blood" },
-            { name: "Farmer", cost: [2], summary: "feeding on non-animal blood costs you 2 willpower" },
-            { name: "Organovore", cost: [2], summary: "your hunger demands human flesh and organs" },
-            { name: "Addiction", cost: [1], summary: "-1 die on all pools if the last person you fed from wasn't on your drug" },
-            { name: "Hopeless Addiction", cost: [2], summary: "-2 dice on all pools if the last person you fed from wasn't on your drug" },
-        ],
-    },
-    {
-        title: "🕰 Keeping up with the times",
-        merits: [],
-        flaws: [
-            { name: "Living in the Past", cost: [1], summary: "you have outdated views & convictions" },
-            { name: "Archaic", cost: [1], summary: "Technology skill stuck at 0" },
-        ],
-    },
-    {
-        title: "🌙 Mythic",
-        merits: [{ name: "Eat Food", cost: [2], summary: "can consume normal food" }],
-        flaws: [
-            { name: "Folkloric Bane", cost: [1], summary: "specific items damage you (eg. silver, garlic)" },
-            {
-                name: "Folkloric Block",
-                cost: [1],
-                summary: "must spend willpower to move past specific block (eg. running water, door uninvited)",
-            },
-            { name: "Stigmata", cost: [1], summary: "bleed from your hands, feet and forehead when at Hunger 4" },
-            { name: "Stake Bait", cost: [2], summary: "Final Death when staked" },
-        ],
-    },
-    {
-        title: "👺 Mask",
-        merits: [
-            { name: "Mask", cost: [1, 2], summary: "fake identity with fake documents, lv2 can pass background checks" },
-            { name: "Zeroed", cost: [1], summary: "all your real records are purged, you officially don't exist" },
-            { name: "Cobbler", cost: [1], summary: "You can make or source masks for others" },
-        ],
-        flaws: [
-            { name: "Known Corpse", cost: [1], summary: "others know you're dead" },
-            { name: "Known Blankbody", cost: [2], summary: "Certain governments / organizations know you're a vampire" },
-        ],
-    },
-    {
-        title: "🗣 Linguistics",
-        merits: [{ name: "Linguistics", cost: [1], summary: "fluently speak another language" }],
-        flaws: [{ name: "Illiterate", cost: [2], summary: "Can't read or write, Academics and Science capped at 1" }],
-    },
-    {
-        title: "🧛 Kindred",
-        merits: [
-            { name: "Mawla", cost: [1, 2, 3, 4, 5], summary: "kindred mentor to advise or help you" },
-            { name: "Status", cost: [1, 2, 3, 4, 5], summary: "positive reputation within a faction" },
-        ],
-        flaws: [
-            { name: "Adversary", cost: [1], summary: "kindred enemy" },
-            { name: "Suspect", cost: [1], summary: "bad reputation within a faction, -2 on Social tests with them" },
-            { name: "Shunned", cost: [2], summary: "despised by a faction" },
-            {
-                name: "Dark Secret",
-                cost: [1, 2],
-                summary:
-                    "You have a dark secret, like owing a debt to bad people or having escaped a blood hunt for masquerade breaching in another city",
-            },
-        ],
-    },
-    {
-        title: "⛓️ Bonding",
-        merits: [],
-        flaws: [
-            { name: "Long Bond", cost: [1], summary: "blood bonds on you take longer to wane" },
-            { name: "Bond Junkie", cost: [1], summary: "lose one die on all actions that go against your blood bond" },
-            { name: "Bondslave", cost: [2], summary: "blood bonds on you are created on the first drink" },
-        ],
-    },
-    {
-        title: "👱 Mortals",
-        merits: [
-            { name: "Retainer", cost: [1, 2, 3], summary: "loyal mortal servant, 1 - weak lowlife, 3 - skilled professional retainer" },
-            { name: "Allies", cost: [1, 2, 3, 4, 5], summary: "group of mortals to advise or help you" },
-            { name: "Contacts", cost: [1, 2, 3], summary: "mortals who provide information or valuable items" },
-            {
-                name: "Herd",
-                cost: [1, 2, 3, 4, 5],
-                summary:
-                    "group of mortals who let you feed, 1 - a couple of people, 5 - large group and you can freely pick desired resonances",
-            },
-            {
-                name: "Fame",
-                cost: [1, 2, 3, 4, 5],
-                summary: "1 - a select subculture loves you, 5 - you are well known and loved globally",
-            },
-        ],
-        flaws: [
-            { name: "Stalkers", cost: [1], summary: "unwanted mortal followers" },
-            { name: "Enemy", cost: [1, 2], summary: "group of mortals that want to harm you" },
-            { name: "Obvious Predator", cost: [2], summary: "mortals are scared of you, can't keep Herd" },
-            {
-                name: "Infamy",
-                cost: [1, 2, 3, 4, 5],
-                summary: "1 - a select subculture despises you, 5 - you are well known and hated globally",
-            },
-        ],
-    },
+    title: t("meritsAndFlaws.haven.title"),
+    merits: [
+        { name: t("meritsAndFlaws.haven.merits.haven.name"), cost: [1, 2, 3], summary: t("meritsAndFlaws.haven.merits.haven.summary") },
+        { name: t("meritsAndFlaws.haven.merits.hiddenArmory.name"), cost: [1], summary: t("meritsAndFlaws.haven.merits.hiddenArmory.summary") },
+        { name: t("meritsAndFlaws.haven.merits.cell.name"), cost: [1], summary: t("meritsAndFlaws.haven.merits.cell.summary") },
+        { name: t("meritsAndFlaws.haven.merits.watchmen.name"), cost: [1], summary: t("meritsAndFlaws.haven.merits.watchmen.summary") },
+        { name: t("meritsAndFlaws.haven.merits.luxury.name"), cost: [1], summary: t("meritsAndFlaws.haven.merits.luxury.summary") },
+    ],
+    flaws: [
+        { name: t("meritsAndFlaws.haven.flaws.noHaven.name"), cost: [1], summary: t("meritsAndFlaws.haven.flaws.noHaven.summary") },
+        { name: t("meritsAndFlaws.haven.flaws.haunted.name"), cost: [1], summary: t("meritsAndFlaws.haven.flaws.haunted.summary") },
+        { name: t("meritsAndFlaws.haven.flaws.creepy.name"), cost: [1], summary: t("meritsAndFlaws.haven.flaws.creepy.summary") },
+        { name: t("meritsAndFlaws.haven.flaws.compromised.name"), cost: [2], summary: t("meritsAndFlaws.haven.flaws.compromised.summary") },
+    ],
+},
+{
+    title: t("meritsAndFlaws.resources.title"),
+    merits: [
+        { name: t("meritsAndFlaws.resources.merits.resources.name"), cost: [1, 2, 3, 4, 5], summary: t("meritsAndFlaws.resources.merits.resources.summary") },
+        { name: t("meritsAndFlaws.resources.merits.trunk.name"), cost: [1], summary: t("meritsAndFlaws.resources.merits.trunk.summary") },
+    ],
+    flaws: [
+        { name: t("meritsAndFlaws.resources.flaws.destitute.name"), cost: [1], summary: t("meritsAndFlaws.resources.flaws.destitute.summary") },
+    ],
+},
+{
+    title: t("meritsAndFlaws.feeding.title"),
+    merits: [
+        { name: t("meritsAndFlaws.feeding.merits.bloodhound.name"), cost: [1], summary: t("meritsAndFlaws.feeding.merits.bloodhound.summary") },
+        { name: t("meritsAndFlaws.feeding.merits.highFunctioningAddict.name"), cost: [1], summary: t("meritsAndFlaws.feeding.merits.highFunctioningAddict.summary") },
+        { name: t("meritsAndFlaws.feeding.merits.ironGullet.name"), cost: [3], summary: t("meritsAndFlaws.feeding.merits.ironGullet.summary") },
+    ],
+    flaws: [
+        { name: t("meritsAndFlaws.feeding.flaws.preyExclusion.name"), cost: [1], summary: t("meritsAndFlaws.feeding.flaws.preyExclusion.summary") },
+        { name: t("meritsAndFlaws.feeding.flaws.methuselasThirst.name"), cost: [1], summary: t("meritsAndFlaws.feeding.flaws.methuselasThirst.summary") },
+        { name: t("meritsAndFlaws.feeding.flaws.farmer.name"), cost: [2], summary: t("meritsAndFlaws.feeding.flaws.farmer.summary") },
+        { name: t("meritsAndFlaws.feeding.flaws.organovore.name"), cost: [2], summary: t("meritsAndFlaws.feeding.flaws.organovore.summary") },
+        { name: t("meritsAndFlaws.feeding.flaws.addiction.name"), cost: [1], summary: t("meritsAndFlaws.feeding.flaws.addiction.summary") },
+        { name: t("meritsAndFlaws.feeding.flaws.hopelessAddiction.name"), cost: [2], summary: t("meritsAndFlaws.feeding.flaws.hopelessAddiction.summary") },
+    ],
+},
+{
+    title: t("meritsAndFlaws.times.title"),
+    merits: [],
+    flaws: [
+        { name: t("meritsAndFlaws.times.flaws.livingPast.name"), cost: [1], summary: t("meritsAndFlaws.times.flaws.livingPast.summary") },
+        { name: t("meritsAndFlaws.times.flaws.archaic.name"), cost: [1], summary: t("meritsAndFlaws.times.flaws.archaic.summary") },
+    ],
+},
+{
+    title: t("meritsAndFlaws.mythic.title"),
+    merits: [
+        { name: t("meritsAndFlaws.mythic.merits.eatFood.name"), cost: [2], summary: t("meritsAndFlaws.mythic.merits.eatFood.summary") },
+    ],
+    flaws: [
+        { name: t("meritsAndFlaws.mythic.flaws.folkloricBane.name"), cost: [1], summary: t("meritsAndFlaws.mythic.flaws.folkloricBane.summary") },
+        { name: t("meritsAndFlaws.mythic.flaws.folkloricBlock.name"), cost: [1], summary: t("meritsAndFlaws.mythic.flaws.folkloricBlock.summary") },
+        { name: t("meritsAndFlaws.mythic.flaws.stigmata.name"), cost: [1], summary: t("meritsAndFlaws.mythic.flaws.stigmata.summary") },
+        { name: t("meritsAndFlaws.mythic.flaws.stakeBait.name"), cost: [2], summary: t("meritsAndFlaws.mythic.flaws.stakeBait.summary") },
+    ],
+},
+{
+    title: t("meritsAndFlaws.mask.title"),
+    merits: [
+        { name: t("meritsAndFlaws.mask.merits.mask.name"), cost: [1, 2], summary: t("meritsAndFlaws.mask.merits.mask.summary") },
+        { name: t("meritsAndFlaws.mask.merits.zeroed.name"), cost: [1], summary: t("meritsAndFlaws.mask.merits.zeroed.summary") },
+        { name: t("meritsAndFlaws.mask.merits.cobbler.name"), cost: [1], summary: t("meritsAndFlaws.mask.merits.cobbler.summary") },
+    ],
+    flaws: [
+        { name: t("meritsAndFlaws.mask.flaws.knownCorpse.name"), cost: [1], summary: t("meritsAndFlaws.mask.flaws.knownCorpse.summary") },
+        { name: t("meritsAndFlaws.mask.flaws.knownBlankbody.name"), cost: [2], summary: t("meritsAndFlaws.mask.flaws.knownBlankbody.summary") },
+    ],
+},
+{
+    title: t("meritsAndFlaws.linguistics.title"),
+    merits: [
+        { name: t("meritsAndFlaws.linguistics.merits.linguistics.name"), cost: [1], summary: t("meritsAndFlaws.linguistics.merits.linguistics.summary") },
+    ],
+    flaws: [
+        { name: t("meritsAndFlaws.linguistics.flaws.illiterate.name"), cost: [2], summary: t("meritsAndFlaws.linguistics.flaws.illiterate.summary") },
+    ],
+},
+{
+    title: t("meritsAndFlaws.kindred.title"),
+    merits: [
+        { name: t("meritsAndFlaws.kindred.merits.mawla.name"), cost: [1, 2, 3, 4, 5], summary: t("meritsAndFlaws.kindred.merits.mawla.summary") },
+        { name: t("meritsAndFlaws.kindred.merits.status.name"), cost: [1, 2, 3, 4, 5], summary: t("meritsAndFlaws.kindred.merits.status.summary") },
+    ],
+    flaws: [
+        { name: t("meritsAndFlaws.kindred.flaws.adversary.name"), cost: [1], summary: t("meritsAndFlaws.kindred.flaws.adversary.summary") },
+        { name: t("meritsAndFlaws.kindred.flaws.suspect.name"), cost: [1], summary: t("meritsAndFlaws.kindred.flaws.suspect.summary") },
+        { name: t("meritsAndFlaws.kindred.flaws.shunned.name"), cost: [2], summary: t("meritsAndFlaws.kindred.flaws.shunned.summary") },
+        { name: t("meritsAndFlaws.kindred.flaws.darkSecret.name"), cost: [1, 2], summary: t("meritsAndFlaws.kindred.flaws.darkSecret.summary") },
+    ],
+},
+{
+    title: t("meritsAndFlaws.bonding.title"),
+    merits: [],
+    flaws: [
+        { name: t("meritsAndFlaws.bonding.flaws.longBond.name"), cost: [1], summary: t("meritsAndFlaws.bonding.flaws.longBond.summary") },
+        { name: t("meritsAndFlaws.bonding.flaws.bondJunkie.name"), cost: [1], summary: t("meritsAndFlaws.bonding.flaws.bondJunkie.summary") },
+        { name: t("meritsAndFlaws.bonding.flaws.bondslave.name"), cost: [2], summary: t("meritsAndFlaws.bonding.flaws.bondslave.summary") },
+    ],
+},
+{
+    title: t("meritsAndFlaws.mortals.title"),
+    merits: [
+        { name: t("meritsAndFlaws.mortals.merits.retainer.name"), cost: [1, 2, 3], summary: t("meritsAndFlaws.mortals.merits.retainer.summary") },
+        { name: t("meritsAndFlaws.mortals.merits.allies.name"), cost: [1, 2, 3, 4, 5], summary: t("meritsAndFlaws.mortals.merits.allies.summary") },
+        { name: t("meritsAndFlaws.mortals.merits.contacts.name"), cost: [1, 2, 3], summary: t("meritsAndFlaws.mortals.merits.contacts.summary") },
+        { name: t("meritsAndFlaws.mortals.merits.herd.name"), cost: [1, 2, 3, 4, 5], summary: t("meritsAndFlaws.mortals.merits.herd.summary") },
+        { name: t("meritsAndFlaws.mortals.merits.fame.name"), cost: [1, 2, 3, 4, 5], summary: t("meritsAndFlaws.mortals.merits.fame.summary") },
+    ],
+    flaws: [
+        { name: t("meritsAndFlaws.mortals.flaws.stalkers.name"), cost: [1], summary: t("meritsAndFlaws.mortals.flaws.stalkers.summary") },
+        { name: t("meritsAndFlaws.mortals.flaws.enemy.name"), cost: [1, 2], summary: t("meritsAndFlaws.mortals.flaws.enemy.summary") },
+        { name: t("meritsAndFlaws.mortals.flaws.obviousPredator.name"), cost: [2], summary: t("meritsAndFlaws.mortals.flaws.obviousPredator.summary") },
+        { name: t("meritsAndFlaws.mortals.flaws.infamy.name"), cost: [1, 2, 3, 4, 5], summary: t("meritsAndFlaws.mortals.flaws.infamy.summary") },
+    ],
+},
 ]
-
 export type RequirementFunction = (character: Character) => boolean
 
 export type Loresheet = {
@@ -1274,3 +1237,4 @@ export const loresheets: Loresheet[] = [
     //     ]
     // },
 ]
+
