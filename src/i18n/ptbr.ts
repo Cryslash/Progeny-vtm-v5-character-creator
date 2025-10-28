@@ -121,7 +121,7 @@ const ptbr = {
     predatorType: {
         question: "Como você <b>obtém sangue?</b>",
         header: "Tipo de Predador",
-        thinbloodsTitle: "Sangue Ralos",
+        thinbloodsTitle: "Sangues-Ralos",
         thinbloodsDescription: "não possuem um tipo de predador.",
         continue: "Continuar",
         categories: {
@@ -421,7 +421,7 @@ const ptbr = {
     },
 
     malkavian: {
-      name: "Malkavian",
+      name: "Malkaviano",
       description: "Clarividentes enlouquecidos por seu dom",
       bane: "Perspectiva Fraturada: Quando sofre uma falha bestial ou compulsão, o personagem sofre uma penalidade igual a sua gravidade da perdição em uma categoria de parada de dados (Fisico, Social ou Mental) durante toda a cena.",
       compulsion:
@@ -469,7 +469,7 @@ const ptbr = {
     },
 
     ministry: {
-      name: "Ministry",
+      name: "Ministério",
       description: "Clã de natureza cultista que usa a tentação como arma",
       bane: "Sob luz intensa, sofra uma penalidade igual a sua gravidade da perdição em todas as jogadas. Recebe a sua gravidade da perdição de dano adicional da luz solar.",
       compulsion:
@@ -516,6 +516,12 @@ const ptbr = {
     },
 
     "thin-blood": {
+      name: "Sangue-Ralo",
+      description: "Meio Vampiro, meio Humano. Desprezado por todos.",
+      bane: "Pária: Aumentar níveis de Disciplinas custa XP igual a 6x o novo nível (em vez de 5x).",
+      compulsion: "Caitiffs não possuem compulsão.",
+    },
+    thinblood: {
       name: "Sangue-Ralo",
       description: "Meio Vampiro, meio Humano. Desprezado por todos.",
       bane: "Pária: Aumentar níveis de Disciplinas custa XP igual a 6x o novo nível (em vez de 5x).",
