@@ -301,8 +301,14 @@ const ptbr = {
     brawl: "Briga",
     craft: "Ofícios",
     drive: "Condução",
-    firearms: "Armas de Fogo",
-    melee: "Armas Brancas",
+    firearms: {
+       full:"Armas de Fogo",
+       short: "Arm. Fogo",
+    },
+    melee: {
+       full:"Armas Brancas",
+       short: "Arm. Brancas",
+    },
     larceny: "Ladroagem",
     stealth: "Furtividade",
     survival: "Sobrevivência",
