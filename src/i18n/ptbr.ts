@@ -308,7 +308,10 @@ const ptbr = {
     survival: "Sobrevivência",
 
     // sociais
-    "animal ken": "Empatia com Animais",
+    "animal ken": {
+      full: "Empatia com Animais",
+      short: "Emp. Animais",
+    },
     etiquette: "Etiqueta",
     insight: "Sagacidade",
     intimidation: "Intimidação",
@@ -646,7 +649,7 @@ const ptbr = {
     },
   },
   "scene queen": { 
-    name: "Rainha da Cena", 
+    name: "Scene Queen", 
     summary: "Alimenta-se dentro da própria cena ou subcultura.",
     merits: {
       fame: {
@@ -741,7 +744,7 @@ const ptbr = {
     }, 
   },
   trapdoor: { 
-    name: "Alçapão", 
+    name: "Trapdoor",
     summary: "Cria armadilhas em seu refúgio e atrai presas até elas.",
     merits: {
       haven: {
@@ -1116,7 +1119,7 @@ disciplines: {
           summary: "Torna-se leve como o ar, quase sem peso.",
         },
         feralWeapons: {
-          name: "Armas Feras",
+          name: "Armas Selvagens",
           summary: "Faz crescer garras letais que rasgam carne e osso.",
         },
         vicissitude: {
@@ -1128,7 +1131,7 @@ disciplines: {
           summary: "Afunda no solo e permanece oculto, seguro até emergir novamente.",
         },
         shapechange: {
-          name: "Metamorfose",
+          name: "Transformação",
           summary: "Transforma-se em um animal de tamanho humano, como lobo ou morcego.",
         },
       },
@@ -1427,7 +1430,7 @@ disciplines: {
         summary: "Não consegue saciar completamente a fome com sangue mortal."
       },
       farmer: {
-        name: "Agricultor",
+        name: "Fazendeiro",
         summary: "Alimentar-se de sangue não animal custa 2 de Força de Vontade."
       },
       organovore: {
