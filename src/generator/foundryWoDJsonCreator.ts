@@ -8,6 +8,7 @@ import { Character } from "../data/Character"
 import { clans } from "../data/Clans"
 import { PredatorTypes } from "../data/PredatorType"
 import { getValueForKey } from "./utils"
+import { t } from "../i18n"
 
 const WoD5EVttJsonSchema = z.object({
     name: z.string(),
@@ -325,28 +326,50 @@ export const createWoD5EVttJson = (character: Character): { json: WoD5EVttJson; 
         disciplineValues[key].value = Math.max(disciplineValues[key].value, disc.level)
     }
 
-    const skills: Record<string, { value: number; bonuses: Record<string, unknown>[] }> = {}
-    Object.entries(character.skills).forEach(([k, v]) => {
-        skills[k] = { value: v as number, bonuses: [] }
-    })
+   const skills: Record<string, { value: number; bonuses: Record<string, unknown>[] }> = {}
+   Object.entries(character.skills).forEach(([k, v]) => {
+     // mapeia a chave interna (ex.: "animal ken") para a chave do Foundry (ex.: "animalken")
+     const foundryKey = skillNameTo_WoD5EVtt_Key[k as SkillsKey] ?? k
+     skills[foundryKey] = { value: Number(v) || 0, bonuses: [] }
+   })
 
     // TODOdin: Double check this
     const specialtySources = [
-        ...(character.skillSpecialties || []),
-        ...((character.predatorType?.pickedSpecialties as unknown as { skill?: string; name?: string }[]) || []),
-    ]
-    for (const spec of specialtySources) {
-        const skillKey = spec && spec.skill ? String(spec.skill) : ""
-        if (!skillKey || !skills[skillKey]) continue
-        const modifiedSpecialty = {
-            source: `${spec.name ?? ""}`,
-            value: 1,
-            paths: [`skills.${skillKey}`],
-            displayWhenInactive: true,
-            activeWhen: { check: "never" },
-        }
-        skills[skillKey].bonuses.push(modifiedSpecialty)
-    }
+  ...(character.skillSpecialties || []),
+  ...((character.predatorType?.pickedSpecialties as unknown as { skill?: string; name?: string }[]) || []),
+]
+
+for (const spec of specialtySources) {
+  const rawSkill = spec?.skill ? String(spec.skill) : ""
+  if (!rawSkill) continue
+
+  // mapeia para a chave do Foundry (ex.: "animal ken" -> "animalken")
+  const foundrySkillKey = skillNameTo_WoD5EVtt_Key[rawSkill as SkillsKey] ?? rawSkill
+
+  // só adiciona se a skill existir no objeto final já mapeado
+  if (!skills[foundrySkillKey]) continue
+
+  // Verifica se há tradução e usa fallback
+  const translationPath = `skills.specialties.${spec.name}`
+  const translatedCandidate = t(translationPath)
+  const translatedName =
+    translatedCandidate && translatedCandidate !== translationPath
+      ? translatedCandidate
+      : spec.name
+
+  // Evita adicionar especializações em branco
+  if (!translatedName || translatedName.trim() === "") continue
+
+  const modifiedSpecialty = {
+    source: translatedName,
+    value: 1,
+    paths: [`skills.${foundrySkillKey}`],
+    displayWhenInactive: true,
+    activeWhen: { check: "never" },
+  }
+
+  skills[foundrySkillKey].bonuses.push(modifiedSpecialty)
+}
 
     const items: Record<string, unknown>[] = []
 
@@ -367,16 +390,16 @@ export const createWoD5EVttJson = (character: Character): { json: WoD5EVttJson; 
 
     // Predator type item
     if (character.predatorType?.name) {
-        const predDef = PredatorTypes[character.predatorType.name as keyof typeof PredatorTypes]
+        const predKey = character.predatorType.name.toLowerCase();
         items.push({
-            name: character.predatorType.name,
-            type: "predatorType",
-            system: {
-                description: predDef?.summary ?? "",
-                gamesystem: "vampire",
-                bonuses: [],
-                dicepool: { path: "", value: 0 },
-            },
+          name: t(`predatorTypes.${predKey}.name`),
+          type: "predatorType",
+          system: {
+            description: t(`predatorTypes.${predKey}.summary`),
+            gamesystem: "vampire",
+            bonuses: [],
+            dicepool: { path: "", value: 0 },
+          },
         })
     }
 
