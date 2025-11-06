@@ -406,24 +406,27 @@ export const PredatorTypes: Record<PredatorTypeName, PredatorType> = {
     { skill: "stealth", name: "Against Kindred" },
   ],
   disciplineOptions: [{ name: "celerity" }, { name: "protean" }],
-  meritsAndFlaws: [],
+  meritsAndFlaws: [{ name: t("predatorTypes.blood leech.merits.preyExclusion.name"), level: 1, summary: t("predatorTypes.blood leech.merits.preyExclusion.summary"), type: "flaw" },],
   selectableMeritsAndFlaws: [
     {
       options: [
         {
-          name: t("predatorTypes.blood leech.selectable.diablerist.name"),
-          summary: t("predatorTypes.blood leech.selectable.diablerist.summary"),
-          maxLevel: 3,
+          name: t("predatorTypes.blood leech.selectable.darkSecret.name"),
+          summary: t("predatorTypes.blood leech.selectable.darkSecret.summary"),
+          // maxLevel: 3,
+          maxLevel: 2,
           type: "merit",
         },
         {
           name: t("predatorTypes.blood leech.selectable.shunned.name"),
           summary: t("predatorTypes.blood leech.selectable.shunned.summary"),
-          maxLevel: 3,
+          // maxLevel: 3,
+          maxLevel: 2,
           type: "flaw",
         },
       ],
-      totalPoints: 3,
+      // totalPoints: 3,
+      totalPoints: 2,
     },
   ],
   humanityChange: -1,

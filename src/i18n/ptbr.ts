@@ -633,7 +633,7 @@ const ptbr = {
         summary: "Grupo de mortais que permite você se alimentar.",
       },
       enemies: {
-        name: "Inimigos",
+        name: "Inimigo",
         summary: "Grupo de mortais que deseja te causar dano.",
       },
       folkloricBane: {
@@ -684,7 +684,7 @@ const ptbr = {
     summary: "Seduz suas presas e toma o sangue delas.",
     merits: {
       beautiful: {
-        name: "Belo(a)",
+        name: "Bonito(a)",
         summary: "+1 dado em testes Sociais.",
       },
       enemy: {
@@ -798,13 +798,19 @@ const ptbr = {
   "blood leech": { 
     name: "Sanguessuga", 
     summary: "Alimenta-se de outros vampiros.",
+    merits:{
+    preyExclusion: {
+        name: "Exclusão de Presa",
+        summary: "Mortais.",
+      },
+    },
     selectable: {
-      diablerist: {
-        name: "Diablerista",
-        summary: "Alguém sabe que você se alimenta de outros Membros.",
+      darkSecret: {
+        name: "Segredo Sombrio",
+        summary: "Diablerista.",
       },
       shunned: {
-        name: "Rejeitado",
+        name: "Segregado",
         summary: "É desprezado por uma facção.",
       },
     }, 
@@ -858,7 +864,7 @@ disciplines: {
           name: "Suculência Animal",
           summary: "Alimenta-se de animais com mais eficiência; pode consumir seu fâmulo para absorver seus aspectos temporariamente.",
         },
-        scentOfPrey: {
+        scentPrey: { //scentOfPrey
           name: "Cheiro de Presa",
           summary: "Detecta mortais que testemunharam violações da Máscara.",
         },
@@ -1199,6 +1205,10 @@ disciplines: {
         bindingFetter: {
           name: "Grilhão Espectral",
           summary: "Identifica objetos e lugares ligados a espíritos.",
+        },
+        armsOfAhriman: {
+          name: "Braços de Ahriman",
+          summary: "Braços sombrios oriundos das sombras, surgem para prender e sufocar inimigos.",
         },
         shadowCast: {
           name: "Projeção Sombria",
@@ -1562,7 +1572,7 @@ disciplines: {
         summary: "má reputação dentro de uma facção; -2 em testes sociais com ela",
       },
       shunned: {
-        name: "Rejeitado",
+        name: "Segregado",
         summary: "desprezado por uma facção",
       },
       darkSecret: {
